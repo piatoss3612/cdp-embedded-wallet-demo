@@ -33,19 +33,23 @@ export default function Transaction(props: Props) {
   const transaction = useMemo<SendTransactionButtonProps["transaction"]>(() => {
     return {
       to: evmAddress, // Send to yourself for testing
-      value: 1000000000000n, // 0.000001 ETH in wei
-      gas: 21000n,
+      value: BigInt(1000000000000), // 0.000001 ETH in wei
+      gas: BigInt(21000),
       chainId: 84532, // Base Sepolia
       type: "eip1559",
     };
   }, [evmAddress]);
 
-  const handleTransactionError: SendTransactionButtonProps["onError"] = error => {
+  const handleTransactionError: SendTransactionButtonProps["onError"] = (
+    error,
+  ) => {
     setTransactionHash("");
     setError(error.message);
   };
 
-  const handleTransactionSuccess: SendTransactionButtonProps["onSuccess"] = hash => {
+  const handleTransactionSuccess: SendTransactionButtonProps["onSuccess"] = (
+    hash,
+  ) => {
     setTransactionHash(hash);
     setError("");
     onSuccess?.();
@@ -71,7 +75,11 @@ export default function Transaction(props: Props) {
             <>
               <h2 className="card-title">Oops</h2>
               <p>{error}</p>
-              <Button className="tx-button" onClick={handleReset} variant="secondary">
+              <Button
+                className="tx-button"
+                onClick={handleReset}
+                variant="secondary"
+              >
                 Reset and try again
               </Button>
             </>
@@ -121,7 +129,11 @@ export default function Transaction(props: Props) {
                   {transactionHash.slice(0, 6)}...{transactionHash.slice(-4)}
                 </a>
               </p>
-              <Button variant="secondary" className="tx-button" onClick={handleReset}>
+              <Button
+                variant="secondary"
+                className="tx-button"
+                onClick={handleReset}
+              >
                 Send another transaction
               </Button>
             </>
